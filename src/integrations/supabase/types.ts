@@ -14,7 +14,161 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      appointments: {
+        Row: {
+          appointment_date: string
+          created_at: string
+          doctor_id: string
+          end_time: string
+          id: string
+          notes: string | null
+          patient_id: string | null
+          patient_name: string | null
+          start_time: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          appointment_date: string
+          created_at?: string
+          doctor_id: string
+          end_time: string
+          id?: string
+          notes?: string | null
+          patient_id?: string | null
+          patient_name?: string | null
+          start_time: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          appointment_date?: string
+          created_at?: string
+          doctor_id?: string
+          end_time?: string
+          id?: string
+          notes?: string | null
+          patient_id?: string | null
+          patient_name?: string | null
+          start_time?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "appointments_doctor_id_fkey"
+            columns: ["doctor_id"]
+            isOneToOne: false
+            referencedRelation: "doctors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "appointments_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      doctors: {
+        Row: {
+          avatar_url: string | null
+          consultation_fee: number
+          created_at: string
+          experience_years: number
+          full_name: string
+          id: string
+          languages: string[]
+          medical_license: string
+          specialization: string
+          updated_at: string
+          verified: boolean
+        }
+        Insert: {
+          avatar_url?: string | null
+          consultation_fee?: number
+          created_at?: string
+          experience_years?: number
+          full_name: string
+          id: string
+          languages?: string[]
+          medical_license: string
+          specialization: string
+          updated_at?: string
+          verified?: boolean
+        }
+        Update: {
+          avatar_url?: string | null
+          consultation_fee?: number
+          created_at?: string
+          experience_years?: number
+          full_name?: string
+          id?: string
+          languages?: string[]
+          medical_license?: string
+          specialization?: string
+          updated_at?: string
+          verified?: boolean
+        }
+        Relationships: []
+      }
+      patients: {
+        Row: {
+          age: number
+          conditions: string[]
+          created_at: string
+          doctor_id: string
+          full_name: string
+          gender: string
+          id: string
+          last_visit_date: string | null
+          phone: string
+          status: string
+          total_visits: number
+          updated_at: string
+          village: string
+        }
+        Insert: {
+          age: number
+          conditions?: string[]
+          created_at?: string
+          doctor_id: string
+          full_name: string
+          gender: string
+          id?: string
+          last_visit_date?: string | null
+          phone: string
+          status?: string
+          total_visits?: number
+          updated_at?: string
+          village: string
+        }
+        Update: {
+          age?: number
+          conditions?: string[]
+          created_at?: string
+          doctor_id?: string
+          full_name?: string
+          gender?: string
+          id?: string
+          last_visit_date?: string | null
+          phone?: string
+          status?: string
+          total_visits?: number
+          updated_at?: string
+          village?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "patients_doctor_id_fkey"
+            columns: ["doctor_id"]
+            isOneToOne: false
+            referencedRelation: "doctors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
