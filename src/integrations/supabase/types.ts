@@ -123,6 +123,7 @@ export type Database = {
           gender: string
           id: string
           last_visit_date: string | null
+          notes: string | null
           phone: string
           status: string
           total_visits: number
@@ -138,6 +139,7 @@ export type Database = {
           gender: string
           id?: string
           last_visit_date?: string | null
+          notes?: string | null
           phone: string
           status?: string
           total_visits?: number
@@ -153,6 +155,7 @@ export type Database = {
           gender?: string
           id?: string
           last_visit_date?: string | null
+          notes?: string | null
           phone?: string
           status?: string
           total_visits?: number

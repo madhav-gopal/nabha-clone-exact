@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { PatientFormDialog } from "@/components/PatientFormDialog";
 
 interface Patient {
   id: string;
@@ -81,10 +82,13 @@ const Patients = () => {
             className="pl-10"
           />
         </div>
-        <Button variant="outline">
-          <Filter className="w-4 h-4 mr-2" />
-          Filter
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline">
+            <Filter className="w-4 h-4 mr-2" />
+            Filter
+          </Button>
+          <PatientFormDialog onPatientCreated={loadPatients} />
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
