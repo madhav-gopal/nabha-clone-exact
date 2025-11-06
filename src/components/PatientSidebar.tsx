@@ -1,0 +1,78 @@
+import { Calendar, FileText, Home, User, Bell } from "lucide-react";
+import { NavLink } from "react-router-dom";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
+} from "@/components/ui/sidebar";
+import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
+
+const menuItems = [
+  {
+    title: "Dashboard",
+    url: "/patient-dashboard",
+    icon: Home,
+  },
+  {
+    title: "Appointments",
+    url: "/patient-appointments",
+    icon: Calendar,
+  },
+  {
+    title: "Medical Records",
+    url: "/patient-records",
+    icon: FileText,
+  },
+  {
+    title: "Profile",
+    url: "/patient-profile",
+    icon: User,
+  },
+];
+
+export function PatientSidebar() {
+  const { open } = useSidebar();
+  const { signOut } = useAuth();
+
+  return (
+    <Sidebar className="border-r">
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Patient Portal</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {menuItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild>
+                    <NavLink
+                      to={item.url}
+                      className={({ isActive }) =>
+                        isActive ? "bg-accent text-accent-foreground" : ""
+                      }
+                    >
+                      <item.icon className="w-4 h-4" />
+                      {open && <span>{item.title}</span>}
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <div className="mt-auto p-4">
+          <Button onClick={signOut} variant="outline" className="w-full">
+            Sign Out
+          </Button>
+        </div>
+      </SidebarContent>
+    </Sidebar>
+  );
+}

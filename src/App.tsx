@@ -5,30 +5,39 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
-import { AuthProvider } from "@/contexts/AuthContext";
+import { PatientSidebar } from "@/components/PatientSidebar";
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import Patients from "./pages/Patients";
 import Schedule from "./pages/Schedule";
 import Profile from "./pages/Profile";
+import PatientDashboard from "./pages/PatientDashboard";
+import PatientAppointments from "./pages/PatientAppointments";
+import PatientMedicalRecords from "./pages/PatientMedicalRecords";
+import PatientProfile from "./pages/PatientProfile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const DashboardLayout = ({ children }: { children: React.ReactNode }) => (
-  <SidebarProvider>
-    <div className="flex min-h-screen w-full">
-      <AppSidebar />
-      <main className="flex-1 overflow-auto">
-        <header className="sticky top-0 z-10 flex h-14 items-center gap-4 border-b bg-background px-4">
-          <SidebarTrigger />
-        </header>
-        {children}
-      </main>
-    </div>
-  </SidebarProvider>
-);
+const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+  const { userRole } = useAuth();
+  
+  return (
+    <SidebarProvider>
+      <div className="flex min-h-screen w-full">
+        {userRole === 'patient' ? <PatientSidebar /> : <AppSidebar />}
+        <main className="flex-1 overflow-auto">
+          <header className="sticky top-0 z-10 flex h-14 items-center gap-4 border-b bg-background px-4">
+            <SidebarTrigger />
+          </header>
+          {children}
+        </main>
+      </div>
+    </SidebarProvider>
+  );
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -75,6 +84,46 @@ const App = () => (
                 <ProtectedRoute>
                   <DashboardLayout>
                     <Profile />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/patient-dashboard"
+              element={
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <PatientDashboard />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/patient-appointments"
+              element={
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <PatientAppointments />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/patient-records"
+              element={
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <PatientMedicalRecords />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/patient-profile"
+              element={
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <PatientProfile />
                   </DashboardLayout>
                 </ProtectedRoute>
               }

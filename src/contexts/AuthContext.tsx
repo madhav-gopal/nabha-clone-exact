@@ -7,6 +7,7 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
+  userRole: 'doctor' | 'patient' | null;
   signOut: () => Promise<void>;
 }
 
@@ -16,6 +17,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [userRole, setUserRole] = useState<'doctor' | 'patient' | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,10 +26,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setSession(session);
       setUser(session?.user ?? null);
       
-      if (event === "SIGNED_IN") {
-        navigate("/dashboard");
+      if (event === "SIGNED_IN" && session?.user) {
+        // Fetch user role after sign in
+        setTimeout(() => {
+          fetchUserRole(session.user.id);
+        }, 0);
       }
       if (event === "SIGNED_OUT") {
+        setUserRole(null);
         navigate("/");
       }
     });
@@ -36,18 +42,49 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
-      setLoading(false);
+      
+      if (session?.user) {
+        fetchUserRole(session.user.id);
+      } else {
+        setLoading(false);
+      }
     });
 
     return () => subscription.unsubscribe();
   }, [navigate]);
+
+  const fetchUserRole = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', userId)
+        .single();
+
+      if (error) throw error;
+      
+      const role = data?.role as 'doctor' | 'patient';
+      setUserRole(role);
+      
+      // Navigate based on role
+      if (role === 'doctor') {
+        navigate('/dashboard');
+      } else if (role === 'patient') {
+        navigate('/patient-dashboard');
+      }
+    } catch (error) {
+      console.error('Error fetching user role:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const signOut = async () => {
     await supabase.auth.signOut();
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, signOut }}>
+    <AuthContext.Provider value={{ user, session, loading, userRole, signOut }}>
       {children}
     </AuthContext.Provider>
   );
