@@ -14,6 +14,59 @@ export type Database = {
   }
   public: {
     Tables: {
+      animal_health_records: {
+        Row: {
+          age: number | null
+          animal_id: string
+          assigned_vet_id: string | null
+          breed: string | null
+          created_at: string
+          current_treatment: string | null
+          id: string
+          last_vaccination: string | null
+          notes: string | null
+          patient_id: string
+          species: string
+          updated_at: string
+        }
+        Insert: {
+          age?: number | null
+          animal_id: string
+          assigned_vet_id?: string | null
+          breed?: string | null
+          created_at?: string
+          current_treatment?: string | null
+          id?: string
+          last_vaccination?: string | null
+          notes?: string | null
+          patient_id: string
+          species: string
+          updated_at?: string
+        }
+        Update: {
+          age?: number | null
+          animal_id?: string
+          assigned_vet_id?: string | null
+          breed?: string | null
+          created_at?: string
+          current_treatment?: string | null
+          id?: string
+          last_vaccination?: string | null
+          notes?: string | null
+          patient_id?: string
+          species?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "animal_health_records_assigned_vet_id_fkey"
+            columns: ["assigned_vet_id"]
+            isOneToOne: false
+            referencedRelation: "veterinary_doctors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       appointments: {
         Row: {
           appointment_date: string
@@ -307,6 +360,102 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      vet_appointments: {
+        Row: {
+          animal_id: string | null
+          appointment_date: string
+          appointment_time: string
+          created_at: string
+          diagnosis: string | null
+          id: string
+          notes: string | null
+          patient_id: string
+          status: string
+          treatment_plan: string | null
+          updated_at: string
+          vet_id: string
+        }
+        Insert: {
+          animal_id?: string | null
+          appointment_date: string
+          appointment_time: string
+          created_at?: string
+          diagnosis?: string | null
+          id?: string
+          notes?: string | null
+          patient_id: string
+          status?: string
+          treatment_plan?: string | null
+          updated_at?: string
+          vet_id: string
+        }
+        Update: {
+          animal_id?: string | null
+          appointment_date?: string
+          appointment_time?: string
+          created_at?: string
+          diagnosis?: string | null
+          id?: string
+          notes?: string | null
+          patient_id?: string
+          status?: string
+          treatment_plan?: string | null
+          updated_at?: string
+          vet_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vet_appointments_animal_id_fkey"
+            columns: ["animal_id"]
+            isOneToOne: false
+            referencedRelation: "animal_health_records"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vet_appointments_vet_id_fkey"
+            columns: ["vet_id"]
+            isOneToOne: false
+            referencedRelation: "veterinary_doctors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      veterinary_doctors: {
+        Row: {
+          available_slots: Json | null
+          created_at: string
+          email: string | null
+          full_name: string
+          id: string
+          phone: string | null
+          specialization: string
+          updated_at: string
+          verified: boolean
+        }
+        Insert: {
+          available_slots?: Json | null
+          created_at?: string
+          email?: string | null
+          full_name: string
+          id?: string
+          phone?: string | null
+          specialization: string
+          updated_at?: string
+          verified?: boolean
+        }
+        Update: {
+          available_slots?: Json | null
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          id?: string
+          phone?: string | null
+          specialization?: string
+          updated_at?: string
+          verified?: boolean
         }
         Relationships: []
       }

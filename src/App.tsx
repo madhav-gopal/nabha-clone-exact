@@ -17,6 +17,10 @@ import PatientDashboard from "./pages/PatientDashboard";
 import PatientAppointments from "./pages/PatientAppointments";
 import PatientMedicalRecords from "./pages/PatientMedicalRecords";
 import PatientProfile from "./pages/PatientProfile";
+import VeterinaryAppointments from "./pages/VeterinaryAppointments";
+import AnimalHealthRecords from "./pages/AnimalHealthRecords";
+import VeterinaryEmergency from "./pages/VeterinaryEmergency";
+import VeterinaryKnowledge from "./pages/VeterinaryKnowledge";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -124,6 +128,46 @@ const App = () => (
                 <ProtectedRoute>
                   <DashboardLayout>
                     <PatientProfile />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/veterinary-appointments"
+              element={
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <VeterinaryAppointments />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/animal-records"
+              element={
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <AnimalHealthRecords />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/veterinary-emergency"
+              element={
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <VeterinaryEmergency />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/veterinary-knowledge"
+              element={
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <VeterinaryKnowledge />
                   </DashboardLayout>
                 </ProtectedRoute>
               }

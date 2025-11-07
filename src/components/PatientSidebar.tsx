@@ -1,4 +1,4 @@
-import { Calendar, FileText, Home, User, Bell } from "lucide-react";
+import { Calendar, FileText, Home, User, Stethoscope, AlertCircle, BookOpen, PawPrint } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import {
   Sidebar,
@@ -37,6 +37,29 @@ const menuItems = [
   },
 ];
 
+const veterinaryItems = [
+  {
+    title: "Vet Appointments",
+    url: "/veterinary-appointments",
+    icon: Stethoscope,
+  },
+  {
+    title: "Animal Records",
+    url: "/animal-records",
+    icon: PawPrint,
+  },
+  {
+    title: "Emergency Help",
+    url: "/veterinary-emergency",
+    icon: AlertCircle,
+  },
+  {
+    title: "Knowledge Corner",
+    url: "/veterinary-knowledge",
+    icon: BookOpen,
+  },
+];
+
 export function PatientSidebar() {
   const { open } = useSidebar();
   const { signOut } = useAuth();
@@ -49,6 +72,29 @@ export function PatientSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild>
+                    <NavLink
+                      to={item.url}
+                      className={({ isActive }) =>
+                        isActive ? "bg-accent text-accent-foreground" : ""
+                      }
+                    >
+                      <item.icon className="w-4 h-4" />
+                      {open && <span>{item.title}</span>}
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Veterinary Services 🐄</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {veterinaryItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <NavLink
